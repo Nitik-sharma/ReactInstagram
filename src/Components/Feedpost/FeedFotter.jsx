@@ -13,7 +13,7 @@ import {
   UnlikeLogo,
   CommentLogo,
 } from "../../assets/Constant";
-function FeedFotter({ username }) {
+function FeedFotter({ username, isProfilePage }) {
   const [liked, setLiked] = useState(false);
   const [like, setLike] = useState(1000);
   const handleLike = () => {
@@ -26,7 +26,7 @@ function FeedFotter({ username }) {
     }
   };
   return (
-    <Box mb={4}>
+    <Box mb={4} marginTop={"auto"}>
       <Flex alignItems={"center"} gap={2} mb={2} my={4}>
         <Box onClick={handleLike} cursor={"pointer"} fontSize={18}>
           {!liked ? <NotificationsLogo /> : <UnlikeLogo />}
@@ -38,16 +38,20 @@ function FeedFotter({ username }) {
       <Text fontSize={"sm"} fontWeight={600}>
         {like} likes
       </Text>
-      <Text fontSize={"sm"} fontWeight={700} color={"gray.400"}>
-        {username}
-        {"    "}
-        <Text as={"span"} fontSize={"sm"} fontWeight={400} color={"white"}>
-          Felling Good
-        </Text>
-      </Text>
-      <Text fontSize={"sm"} fontWeight={600} color={"gray.500"}>
-        View all 1000 comments...
-      </Text>
+      {isProfilePage && (
+        <>
+          <Text fontSize={"sm"} fontWeight={700} color={"gray.400"}>
+            {username}
+            {"    "}
+            <Text as={"span"} fontSize={"sm"} fontWeight={400} color={"white"}>
+              Felling Good
+            </Text>
+          </Text>
+          <Text fontSize={"sm"} fontWeight={600} color={"gray.500"}>
+            View all 1000 comments...
+          </Text>
+        </>
+      )}
       <Flex
         justifyContent={"space-between"}
         alignItems={"center"}
