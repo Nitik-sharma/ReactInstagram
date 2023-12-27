@@ -1,12 +1,21 @@
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { Input, Button, InputGroup, InputRightElement } from "@chakra-ui/react";
+import {
+  Input,
+  Button,
+  InputGroup,
+  InputRightElement,
+  Alert,
+  AlertTitle,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
+import useLogin from "../Hooks/useLogin";
 
 function Login() {
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
   });
+  const { loading, login, error } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
   return (
     <>
@@ -36,7 +45,17 @@ function Login() {
           </Button>
         </InputRightElement>
       </InputGroup>
-      <Button w={"full"} colorScheme="blue">
+      {error && (
+        <Alert status="error">
+          <AlertTitle>{error.message}</AlertTitle>
+        </Alert>
+      )}
+      <Button
+        w={"full"}
+        colorScheme="blue"
+        isLoading={loading}
+        onClick={() => login(inputs)}
+      >
         LogIn
       </Button>
     </>

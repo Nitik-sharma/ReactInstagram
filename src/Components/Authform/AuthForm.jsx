@@ -39,14 +39,14 @@ function AuthForm() {
             </Text>
             <Box flex={2} h={"1px "} bg={"gray.400"} />
           </Flex>
-
-          <GoggleAuth />
+          {/* Goggle login ------------ */}
+          <GoggleAuth prefix={!islogin ? "Log in" : "Sign up"} />
         </VStack>
       </Box>
       <Box border={"1px solid gray"} borderRadius={4} padding={4}>
         <Flex justifyContent={"center"} alignItems={"center"}>
           <Box mx={2} fontSize={14}>
-            {islogin ? "Don't have an account" : "Already have an account"}
+            {!islogin ? "Don't have an account" : "Already have an account"}
           </Box>
           <Box
             color={"blue.500"}

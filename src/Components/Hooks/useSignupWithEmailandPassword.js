@@ -3,12 +3,10 @@ import { auth, firestore } from "../firebase/FirebaseSetup";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import {
   doc,
-  addDoc,
   setDoc,
   collection,
   query,
   where,
-  getDoc,
   getDocs,
 } from "firebase/firestore";
 import useShowToast from "./useShowToast";
