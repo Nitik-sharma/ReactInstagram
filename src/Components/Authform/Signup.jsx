@@ -68,14 +68,30 @@ function Signup() {
           <AlertTitle>{error.message}</AlertTitle>
         </Alert>
       )}
-      <Button
+      {/* <Button
         w={"full"}
         colorScheme="blue"
         onClick={() => signUp(inputs)}
         isLoading={loading}
       >
         SignIn
+      </Button> */}
+      <Button
+        w={"full"}
+        bg={"blue.500"}
+        color={"whitesmoke"}
+        isLoading={loading}
+        onClick={() => signUp(inputs)}
+      >
+        Sign in
       </Button>
+      {/* Button
+        w={"full"}
+        bg={"blue.500"}
+        color={"whitesmoke"}
+        isLoading={loading}
+        onClick={() => login(inputs)}
+      ></Button> */}
     </>
   );
 }

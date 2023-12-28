@@ -52,14 +52,24 @@ function Login() {
       )}
       <Button
         w={"full"}
-        colorScheme="blue"
+        bg={"blue.500"}
+        color={"whitesmoke"}
         isLoading={loading}
         onClick={() => login(inputs)}
       >
-        LogIn
+        Login
       </Button>
     </>
   );
 }
 
 export default Login;
+
+//   <Button
+//   w={"full"}
+//   colorScheme="blue"
+//   isLoading={loading}
+//   onClick={() => login(inputs)}
+// >
+//   LogIn
+// </Button>

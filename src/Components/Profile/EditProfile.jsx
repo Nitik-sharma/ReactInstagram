@@ -18,17 +18,28 @@ import {
 import { useRef, useState } from "react";
 import { UseAuthStore } from "../../Store/authStore";
 import UseImagePrev from "../Hooks/UseImagePrev";
+import UseEditProfile from "../Hooks/UseEditProfile";
+import useShowToast from "../Hooks/useShowToast";
 
 const EditProfile = ({ isOpen, onClose }) => {
   const fileRef = useRef(null);
   const [inputs, setInputs] = useState({
-    fullName: "",
+    fullname: "",
     username: "",
     bio: "",
   });
+  const { editProfile, isUpdate } = UseEditProfile();
   const AuthUser = UseAuthStore((state) => state.user);
-  const handleEditProfile = () => {
-    console.log(inputs);
+  const showToast = useShowToast();
+  const handleEditProfile = async () => {
+    console.log("hello");
+    try {
+      await editProfile(inputs, selectedFile);
+      setSelectedFile(null);
+      onClose();
+    } catch (error) {
+      showToast("Erorr", error.message, "error");
+    }
   };
   const { selectedFile, setSelectedFile, handleFile } = UseImagePrev();
   return (
@@ -87,9 +98,9 @@ const EditProfile = ({ isOpen, onClose }) => {
                     placeholder={"Full Name"}
                     size={"sm"}
                     type={"text"}
-                    value={inputs.fullName || AuthUser.fullname}
+                    value={inputs.fullname || AuthUser.fullname}
                     onChange={(e) =>
-                      setInputs({ ...inputs, fullName: e.target.value })
+                      setInputs({ ...inputs, fullname: e.target.value })
                     }
                   />
                 </FormControl>
@@ -138,6 +149,7 @@ const EditProfile = ({ isOpen, onClose }) => {
                     w="full"
                     _hover={{ bg: "blue.500" }}
                     onClick={handleEditProfile}
+                    isLoading={isUpdate}
                   >
                     Submit
                   </Button>

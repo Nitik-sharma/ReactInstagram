@@ -12,10 +12,15 @@ import profile from "../../assets/profilepic.png";
 import { UseProfileStore } from "../../Store/ProfileStore";
 import { UseAuthStore } from "../../Store/authStore";
 import EditProfile from "./EditProfile";
+import UseFollowing from "../Hooks/UseFollowing";
 function ProfileHeader() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const { userProfile } = UseProfileStore();
   const userAuth = UseAuthStore((state) => state.user);
+  const { isFollowing, isUpdateing, handleFollwers } = UseFollowing(
+    userProfile?.uid
+  );
   const visitingOwnPage =
     userAuth && userAuth.username === userProfile.username;
   const visitAnotherProfile =
@@ -67,8 +72,10 @@ function ProfileHeader() {
                 color={"white"}
                 _hover={{ bg: "blue.800" }}
                 size={{ base: "xs", md: "sm" }}
+                onClick={handleFollwers}
+                isLoading={isUpdateing}
               >
-                Follow
+                {isFollowing ? "Unfollow" : "Follow"}
               </Button>
             </Flex>
           )}

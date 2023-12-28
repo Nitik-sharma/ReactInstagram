@@ -18,13 +18,13 @@ function Navbar() {
         />
         <Flex gap={4}>
           <Link to={"/auth"}>
-            <Button colorScheme="blue" size={"sm"}>
-              Log in
+            <Button size={"sm"} bg={"blue.500"} color={"whitesmoke"}>
+              Login
             </Button>
           </Link>
           <Link to={"/auth"}>
-            <Button colorScheme="blue" size={"sm"}>
-              SignUp
+            <Button size={"sm"} bg={"blue.500"} color={"whitesmoke"}>
+              Sign up
             </Button>
           </Link>
         </Flex>
