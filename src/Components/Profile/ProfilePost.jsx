@@ -15,16 +15,51 @@ import {
   Divider,
   VStack,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { FaComment } from "react-icons/fa";
 import avter from "../../assets/profilepic.png";
 import { MdDelete } from "react-icons/md";
 import Comments from "../Comments/Comments";
 import PostFooter from "../Feedpost/FeedFotter";
+import { UseProfileStore } from "../../Store/ProfileStore";
+import { UseAuthStore } from "../../Store/authStore";
+import useShowToast from "../Hooks/useShowToast";
+import { deleteObject, ref } from "firebase/storage";
+import { firestore, storage } from "../firebase/FirebaseSetup";
+import { arrayRemove, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { usePostStore } from "../../Store/PostStore";
 
-function ProfilePost({ img }) {
+function ProfilePost({ post }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const userProfile = UseProfileStore((state) => state.userProfile);
+  const authuser = UseAuthStore((state) => state.user);
+  const showToast = useShowToast();
+  const [deleting, setDeleting] = useState(false);
+  const deletePost = usePostStore((state) => state.deletePost);
+  const deletePostFromProfile = usePostStore((state) => state.deletePost);
+  const handleDeletePost = async () => {
+    if (!window.confirm("Are you sure you want to delete the post?")) return;
+    if (deleting) {
+      return;
+    }
+    try {
+      const imageRef = ref(storage, `posts/${post.id}`);
+      await deleteObject(imageRef);
+      const userDocRef = doc(firestore, "users", authuser.uid);
+      await deleteDoc(doc(firestore, "posts", post.id));
+      await updateDoc(userDocRef, { posts: arrayRemove(post.id) });
+      deletePost(post.id);
+      deletePostFromProfile(post.id);
+      showToast("success");
+    } catch (error) {
+      showToast("Error");
+      console.log("error", error.message);
+    } finally {
+      setDeleting(false);
+    }
+  };
+  console.log("post-->", post);
   return (
     <>
       <GridItem
@@ -71,7 +106,7 @@ function ProfilePost({ img }) {
           </Flex>
         </Flex>
         <Image
-          src={img}
+          src={post.imageURL}
           alt="profile image"
           w={"100%"}
           height={"100%"}
@@ -103,7 +138,7 @@ function ProfilePost({ img }) {
                 borderColor={"whiteAlpha.400"}
                 flex={1.5}
               >
-                <Image src={img} alt="profile image" />
+                <Image src={post.imageURL} alt="profile image" />
               </Box>
               {/* avter and profile name column and delete btn */}
               <Flex
@@ -114,17 +149,24 @@ function ProfilePost({ img }) {
               >
                 <Flex alignItems={"center"} justifyContent={"space-between"}>
                   <Flex alignItems={"center"} gap={4}>
-                    <Avatar src={avter} alt="profile image" size={"sm"} />
+                    <Avatar
+                      src={userProfile.profilePicUrl}
+                      alt="profile image"
+                      size={"sm"}
+                    />
                     <Text fontWeight={"bold"} fontSize={12}>
-                      Programer_
+                      {userProfile.fullname}
                     </Text>
                   </Flex>
-                  <Box
-                    _hover={{ bg: "whiteAlpha.400", color: "red.600" }}
-                    p={1}
-                  >
-                    <MdDelete size={20} cursor={"pointer"} />
-                  </Box>
+                  {authuser.uid === userProfile.uid && (
+                    <Box
+                      _hover={{ bg: "whiteAlpha.400", color: "red.600" }}
+                      p={1}
+                      onClick={handleDeletePost}
+                    >
+                      <MdDelete size={20} cursor={"pointer"} />
+                    </Box>
+                  )}
                 </Flex>
                 <Divider my={4} bg={"gary.500"} />
                 <VStack

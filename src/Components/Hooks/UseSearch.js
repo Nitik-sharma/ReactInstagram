@@ -5,7 +5,7 @@ import { firestore } from "../firebase/FirebaseSetup";
 
 function UseSearch() {
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
   const showToast = useShowToast();
   const getuserprofile = async (username) => {
     setIsLoading(true);

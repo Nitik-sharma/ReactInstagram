@@ -18,9 +18,10 @@ function Suggesteduers() {
           See all
         </Text>
       </Flex>
-      {suggestedUser.map((items) => (
-        <SuggestedUser user={items} key={items.id} />
-      ))}
+      {suggestedUser.map((items) => {
+        console.log("items--->", items);
+        return <SuggestedUser user={items} key={items.id} />;
+      })}
     </VStack>
   );
 }

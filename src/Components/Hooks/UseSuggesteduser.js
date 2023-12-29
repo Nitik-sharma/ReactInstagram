@@ -31,6 +31,7 @@ function UseSuggesteduser() {
         const users = [];
         querySnapShot.forEach((doc) => {
           users.push({ ...doc.data(), id: doc.id });
+          console.log("users-->", users);
         });
         setSuggesteduser(users);
       } catch (error) {

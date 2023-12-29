@@ -3,7 +3,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { UseAuthStore } from "../../Store/authStore";
 const ProfileLink = () => {
   const authUser = UseAuthStore((state) => state.user);
-
+  console.log("authuser--->", authUser);
   return (
     <Tooltip
       hasArrow
@@ -25,7 +25,11 @@ const ProfileLink = () => {
         w={{ base: 10, md: "full" }}
         justifyContent={{ base: "center", md: "flex-start" }}
       >
-        <Avatar size={"sm"} src={authUser?.profilePicURL || ""} />
+        <Avatar
+          size={"sm"}
+          src={authUser.profilePicUrl}
+          name={authUser.username}
+        />
         <Box display={{ base: "none", md: "block" }}>Profile</Box>
       </Link>
     </Tooltip>
